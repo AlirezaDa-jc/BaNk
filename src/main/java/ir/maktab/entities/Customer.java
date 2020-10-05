@@ -28,6 +28,9 @@ public class Customer {
     private Address address;
 
     @OneToMany(mappedBy="customer",cascade = CascadeType.ALL)
+    private Set<Record> records = new HashSet<>();
+
+    @OneToMany(mappedBy="customer",cascade = CascadeType.ALL)
     private Set<Account> Accounts = new HashSet<>();
 
     public Address getAddress() {
@@ -96,5 +99,13 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Record> getRecords() {
+        return records;
+    }
+
+    public void setRecords(Set<Record> records) {
+        this.records = records;
     }
 }

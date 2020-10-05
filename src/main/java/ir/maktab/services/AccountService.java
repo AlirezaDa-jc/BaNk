@@ -2,10 +2,7 @@ package ir.maktab.services;
 
 import ir.maktab.MainApp;
 import ir.maktab.Scan;
-import ir.maktab.entities.Account;
-import ir.maktab.entities.Branch;
-import ir.maktab.entities.Card;
-import ir.maktab.entities.Customer;
+import ir.maktab.entities.*;
 import ir.maktab.repository.AccountRepository;
 import ir.maktab.repository.Impl.AccountRepositoryImpl;
 
@@ -119,6 +116,7 @@ public class AccountService {
     public static void displayAllUsersAccount() {
         List<Account> all = repository.findAll();
         all.stream()
+//                .filter((a) -> a.getCustomer()==CustomerService.getCustomer()))
                 .filter((a) -> a.getCustomer().getNationalCode().equals(CustomerService.getCustomer().getNationalCode()))
                 .filter((a) -> !a.isDeleted())
                 .forEach(System.out::println);
@@ -178,6 +176,7 @@ public class AccountService {
                 System.out.println("Not Enough Money!");
                 return;
             }
+            if (!RecordService.insert(card, balance, account)) return;
             updatedBalance -= (balance + 500);
             account.setBalance(updatedBalance);
             repository.insert(account);
@@ -185,7 +184,7 @@ public class AccountService {
             updatedBalance = secondAccount.getBalance();
             secondAccount.setBalance((updatedBalance + balance));
             repository.insert(secondAccount);
-        }catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             System.out.println("Invalid Input!");
         }
     }

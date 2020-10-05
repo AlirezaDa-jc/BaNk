@@ -14,6 +14,7 @@ public abstract class Customer_ {
 	public static volatile SingularAttribute<Customer, String> password;
 	public static volatile SingularAttribute<Customer, Role> role;
 	public static volatile SingularAttribute<Customer, Address> address;
+	public static volatile SetAttribute<Customer, Record> records;
 	public static volatile SingularAttribute<Customer, String> name;
 	public static volatile SingularAttribute<Customer, Integer> id;
 	public static volatile SetAttribute<Customer, Account> Accounts;

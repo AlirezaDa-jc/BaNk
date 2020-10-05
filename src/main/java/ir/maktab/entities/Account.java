@@ -11,7 +11,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id" , updatable = false , nullable = false , unique = true)
     private int id;
-    @Column(name = "createDate" , nullable = false)
+    @Column(name = "createDate",updatable = false, nullable = false)
     private String createDate;
     @Column(name = "balance" , nullable = false)
     private Integer balance = 0;

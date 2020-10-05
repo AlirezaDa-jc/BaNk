@@ -69,6 +69,8 @@ public class CustomerMenu extends MenuImpl implements Menu {
                     case 6:
                         AccountService.transfer();
                         break;
+                    case 9:
+                        flag = false;
                 }
             }catch (NullPointerException ex){
                 System.out.println("Invalid Input!");
