@@ -15,6 +15,8 @@ public class Branch {
     private String title;
     @Column(name = "description" , nullable = false , unique = true)
     private String description;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Employee boss;
 
     @OneToMany(mappedBy = "branch",cascade = CascadeType.ALL)
     private Set<Account> accounts = new HashSet<>();
@@ -67,5 +69,13 @@ public class Branch {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+
+    public Employee getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Employee boss) {
+        this.boss = boss;
     }
 }

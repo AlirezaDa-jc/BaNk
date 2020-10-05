@@ -24,8 +24,7 @@ public class MainApp {
                 Menu menu = menuFactory.getMenu();
                 menu.menuHandler();
             }catch (NullPointerException ex){
-                System.out.println("Roles Are Admin And User");
-                System.out.println("Invalid Role!");
+                System.out.println("Invalid Input!");
             }
         }
     }

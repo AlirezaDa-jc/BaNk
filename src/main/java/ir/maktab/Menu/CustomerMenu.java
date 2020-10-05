@@ -7,6 +7,7 @@ import ir.maktab.MainApp;
 import ir.maktab.Scan;
 import ir.maktab.services.AccountService;
 import ir.maktab.services.CustomerService;
+import ir.maktab.services.RecordService;
 
 public class CustomerMenu extends MenuImpl implements Menu {
     private Scan sc;
@@ -22,6 +23,8 @@ public class CustomerMenu extends MenuImpl implements Menu {
         System.out.println("Update Your Personal Info Press 3");
         System.out.println("To Delete Your Account Press 4");
         System.out.println("To Deposit Money To Your Account Press 5");
+        System.out.println("To Transfer Money To another Card Press 6");
+        System.out.println("To See Your Records Press 7");
 
         System.out.println("Log Out Press 9");
     }
@@ -61,13 +64,16 @@ public class CustomerMenu extends MenuImpl implements Menu {
                         CustomerService.update();
                         break;
                     case 4:
-                        AccountService.delete();
+                        AccountService.deleteByUser();
                         break;
                     case 5:
                         AccountService.updateBalance();
                         break;
                     case 6:
                         AccountService.transfer();
+                        break;
+                    case 7:
+                        RecordService.displayFiltered();
                         break;
                     case 9:
                         flag = false;

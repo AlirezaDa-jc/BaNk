@@ -33,8 +33,12 @@ public class CardService {
     }
 
     public static String checkID(String actual) {
-        while(repository.findByCardId(actual) != null) actual = String.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() *
-                (MAX_NUMBER - MIN_NUMBER)).longValue()));
+        while(repository.cardIdExists(actual)) {
+            long i = Math.abs(Float.valueOf(new Random().nextFloat() *
+                    (MAX_NUMBER - MIN_NUMBER)).longValue());
+            System.out.println(i);
+            actual = String.valueOf(i);
+        }
         return actual;
     }
 
@@ -43,7 +47,7 @@ public class CardService {
     }
 
     public static String checkCVV2(String cvv2) {
-        while(repository.findByCardId(cvv2) != null) {
+        while(repository.cvv2Exists(cvv2)) {
             cvv2 = String.valueOf(Math.abs(new Random().nextInt()));
             while(!(Integer.parseInt(cvv2) < 9999 && Integer.parseInt(cvv2) > 1000))
                 cvv2 = String.valueOf(Math.abs(new Random().nextInt()));
@@ -51,10 +55,6 @@ public class CardService {
         return cvv2;
     }
 
-//
-//    public static void displayAll() {
-//        repository.displayAll();
-//    }
 
 
 }

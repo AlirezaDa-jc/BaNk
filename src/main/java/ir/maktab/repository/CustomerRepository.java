@@ -4,5 +4,7 @@ import ir.maktab.base.repository.BaseRepository;
 import ir.maktab.entities.Customer;
 
 public interface CustomerRepository extends BaseRepository<Customer,Integer> {
-    boolean userLogin(String nationalCode, String password);
+//    boolean userLogin(String nationalCode, String password);
+
+    Customer findByNC(String nationalCode);
 }

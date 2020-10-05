@@ -9,6 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Branch.class)
 public abstract class Branch_ {
 
+	public static volatile SingularAttribute<Branch, Employee> boss;
 	public static volatile SingularAttribute<Branch, String> description;
 	public static volatile SingularAttribute<Branch, Integer> id;
 	public static volatile SetAttribute<Branch, Account> accounts;

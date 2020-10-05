@@ -3,7 +3,7 @@ package ir.maktab.services;
 import ir.maktab.MainApp;
 import ir.maktab.Scan;
 import ir.maktab.entities.Branch;
-import ir.maktab.entities.Card;
+import ir.maktab.entities.Employee;
 import ir.maktab.repository.BranchRepository;
 import ir.maktab.repository.Impl.BranchRepositoryImpl;
 
@@ -13,7 +13,6 @@ public class BranchService {
     private static Branch branch = new Branch();
     private static BranchRepository repository = new BranchRepositoryImpl();
     private static Scan sc = MainApp.getSc();
-
 
 
     public static Branch getBranch() {
@@ -32,30 +31,35 @@ public class BranchService {
         BranchService.repository = repository;
     }
 
-//    public static void display() {
-//        repository.findAll();
-//    }
-
 
     public static Branch use() {
         System.out.println("\nBranch Section!");
         List<Branch> all = repository.findAll();
-        all.forEach((t)-> System.out.println("id: " + t.getId() + "\nTitle: " + t.getTitle()));
+        all.forEach((t) -> System.out.println("id: " + t.getId() + "\nTitle: " + t.getTitle()));
         int id = Integer.parseInt(sc.getString("Enter id Of Branch: "));
         return repository.findById(id);
     }
 
-//    public static Branch add() {
-//        String title = sc.getString("Enter Title: ");
-////        if (!CategoryRepositoryImpl.checkDuplicateTitle(title)) return;
+    public static boolean add() {
+        String title = sc.getString("Enter Title: ");
+        if (repository.findByTitle(title) != null) {
+            System.out.println("Invalid Title");
+            return false;
+        }
+        String description = sc.getString("Enter Description: ");
+        EmployeeService.insertBoss();
+        int id = Integer.parseInt(sc.getString());
+        Employee boss = EmployeeService.findById(id);
+        branch.setTitle(title);
+        branch.setDescription(description);
+        if (boss == null) return false;
+        branch.setBoss(boss);
+        repository.insert(branch);
+        boss.setBranch(branch);
+        EmployeeService.updateBranch(boss);
+        return true;
+    }
 
-//        String description = sc.getString("Enter Description: ");
-//        branch.setTitle(title);
-//        branch.setDescription(description);
-////        CategoryRepositoryImpl.add(category);
-
-
-//        repository.insert(branch);
-//    }
-
+    public static void displayAll() {
+    }
 }

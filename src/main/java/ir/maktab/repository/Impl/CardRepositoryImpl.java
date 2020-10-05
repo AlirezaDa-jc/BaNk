@@ -28,5 +28,35 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card,Integer> impleme
         em.getTransaction().rollback();
         return null;
     }
+
+    @Override
+    public boolean cardIdExists(String actual) {
+        em.getTransaction().begin();
+        TypedQuery<Card> query = em.createQuery(
+                "SELECT u FROM Card u where u.cardId=:title",
+                Card.class);
+        query.setParameter("title", actual);
+        if (query.getResultList().size() > 0) {
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().rollback();
+        return false;
+    }
+
+    @Override
+    public boolean cvv2Exists(String cvv2) {
+        em.getTransaction().begin();
+        TypedQuery<Card> query = em.createQuery(
+                "SELECT u FROM Card u where u.cvv2=:title",
+                Card.class);
+        query.setParameter("title", cvv2);
+        if (query.getResultList().size() > 0) {
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().rollback();
+        return false;
+    }
 }
 

@@ -19,6 +19,9 @@ public class Customer {
     private String birthday;
     @Column(name = "password")
     private String password;
+    @Column(name = "isSuspended")
+    private boolean isSuspended = false;
+
 
     @ManyToOne
     @JoinColumn(name = "roleid")
@@ -107,5 +110,13 @@ public class Customer {
 
     public void setRecords(Set<Record> records) {
         this.records = records;
+    }
+
+    public boolean isSuspended() {
+        return isSuspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        isSuspended = suspended;
     }
 }

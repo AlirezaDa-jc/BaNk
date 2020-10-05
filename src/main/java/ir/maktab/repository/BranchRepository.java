@@ -4,4 +4,5 @@ import ir.maktab.base.repository.BaseRepository;
 import ir.maktab.entities.Branch;
 
 public interface BranchRepository extends BaseRepository<Branch,Integer> {
+    Branch findByTitle(String title);
 }

@@ -9,12 +9,13 @@ import ir.maktab.entities.Role;
 import ir.maktab.repository.CustomerRepository;
 import ir.maktab.repository.Impl.CustomerRepositoryImpl;
 
+import java.util.List;
+
 
 public class CustomerService {
     private static Customer customer = new Customer();
     private static CustomerRepository repository = new CustomerRepositoryImpl();
     private static Scan sc = MainApp.getSc();
-
 
     public static Customer getCustomer() {
         return customer;
@@ -35,7 +36,7 @@ public class CustomerService {
         }
         customer.setBirthday(birthday);
         String choice = sc.getString("You Want To Enter a Password? Y/N");
-        if(choice.toLowerCase().charAt(0) == 'y') {
+        if (choice.toLowerCase().charAt(0) == 'y') {
             String password = sc.getString("Password: ");
             String confirmPassword = sc.getString("Confirmed Password: ");
             if (password.equals(confirmPassword)) {
@@ -77,23 +78,54 @@ public class CustomerService {
     }
 
     private static boolean login() {
+
+        int countLoginTry = 0;
         String nationalCode = sc.getString("NationalCode: ");
-        String password = sc.getString("Password: (If You Don't Have Any Password Press Enter!))");
-        return repository.userLogin(nationalCode, password);
+        customer = repository.findByNC(nationalCode);
+        if(customer.isSuspended()){
+            System.out.println("Customer Suspended!");
+            System.out.println("Report To Admins!");
+            return false;
+        }
+        while (true) {
+            if(countLoginTry > 2){
+                System.out.println("Account Suspended!");
+                customer.setSuspended(true);
+                repository.update(customer);
+                return false;
+            }
+            if(customer.getPassword() == null){
+                return true;
+            }
+            if (checkPassword(customer)) {
+                return true;
+            }else{
+                countLoginTry++;
+            }
+        }
+    }
+
+    private static boolean checkPassword(Customer customer) {
+        String password = sc.getString("Password: ");
+        return customer.getPassword().equals(password);
     }
 
     public static void updatePassword() {
-        String oldPassword = sc.getString("Enter Your Old Password: ");
-        if (!oldPassword.equals(customer.getPassword())) {
-            System.out.println("Wrong Password!");
-            return;
+        if(customer.getPassword()!=null) {
+            String oldPassword = sc.getString("Enter Your Old Password: ");
+            if (!oldPassword.equals(customer.getPassword())) {
+                System.out.println("Wrong Password!");
+                return;
+            }
         }
         String newPassword = sc.getString("Enter Your New Password: ");
         String confirmedPassword = sc.getString("Enter Your New Password Again: ");
         if (newPassword.equals(confirmedPassword)) {
             customer.setPassword(newPassword);
+            System.out.println(customer);
             repository.update(customer);
             System.out.println("Updated Successfully");
+            return;
         }
         System.out.println("Unmatched Passwords!");
 
@@ -122,12 +154,10 @@ public class CustomerService {
     }
 
 
-
-
     private static void updateBirthday() {
         System.out.println("Your Birthday is : " + customer.getBirthday());
         String choice = sc.getString("Are You Sure You Want To Change Your Birthday: Y/N");
-        if(choice.toLowerCase().charAt(0) == 'n') return;
+        if (choice.toLowerCase().charAt(0) == 'n') return;
         String birthday = sc.getString("Birthday: ");
         while (!birthday.matches("[0-9]{4}-[0-3][0-9]-[0-3][0-9]")) {
             birthday = sc.getString("Date of Birthday: (Format : YYYY-MM-DD)");
@@ -140,28 +170,30 @@ public class CustomerService {
     private static void updateName() {
         System.out.println("Your Name Is : " + customer.getName());
         String choice = sc.getString("Are You Sure You Want To Change Your Name: Y/N");
-        if(choice.toLowerCase().charAt(0) == 'n') return;
+        if (choice.toLowerCase().charAt(0) == 'n') return;
         String name = sc.getString("name: ");
         customer.setName(name);
         repository.update(customer);
         System.out.println("Updated Successfully");
     }
+    public static void updateSuspension() {
+        displayAllSuspendedAccounts();
+        int id = Integer.parseInt(sc.getString("ID Of Customer"));
+        Customer customer = repository.findById(id);
+        char choice = sc.getString("Allow: Y/N : ").toLowerCase().charAt(0);
+        if(choice == 'n') {
+            System.out.println("Update Unsuccessful");
+            return;
+        }
+        customer.setSuspended(false);
+        repository.update(customer);
+    }
 
-//    public static Customer findUser(String name) {
-//        return repository.findByTitle(name);
-//    }
-//
-//    public static void update(Customer newCustomer) {
-//        repository.delete(newCustomer);
-//    }
-//
-//    public static void delete() {
-//        repository.displayAll();
-//        int id = Integer.parseInt(sc.getString("ID Of User"));
-//        repository.deleteById(id);
-//    }
-//
-//    public static void display() {
-//        repository.displayAll();
-//    }
+    private static void displayAllSuspendedAccounts() {
+        List<Customer> all = repository.findAll();
+        all.stream()
+                .filter(Customer::isSuspended)
+                .forEach(System.out::println);
+    }
+
 }

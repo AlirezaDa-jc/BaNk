@@ -58,53 +58,6 @@ public class AccountService {
         return createDate;
     }
 
-//    public static void displayAUserArticle() {
-//        repository.displayAUserArticle();
-//    }
-
-    private static String getText(String s) {
-        System.out.print(s);
-        StringBuilder text = new StringBuilder();
-        while (true) {
-            String temp = sc.getString();
-            if (temp.equals("ESC")) {
-                break;
-            }
-            text.append(temp).append("\n");
-        }
-        return text.toString();
-    }
-
-
-//    public static void deleteArticleUser() {
-//        displayAUserArticle();
-//        int id = Integer.parseInt(sc.getString("ID of Article You Want to Delete: "));
-//        Customer customer = CustomerService.getCustomer();
-//        Set<Account> accountSet = customer.getAccounts();
-//        for (Account account : accountSet) {
-//            if (account.getId() == id) {
-//                repository.deleteById(id);
-//                Set<Card> cards = account.getTags();
-//                System.out.println("Deleted Successfully");
-//                cards.forEach((t) -> t.removeArticle(true));
-//            } else {
-//                System.out.println("Invalid ID");
-//            }
-//            return;
-//        }
-//    }
-
-
-//    private static boolean updateCategory(Account account) {
-//        Branch branch = CategoryService.use();
-//        if (branch == null) {
-//            System.out.println("Invalid Usage Of Category");
-//            return false;
-//        }
-//        account.setCategory(branch);
-//        repository.update(account);
-//        return true;
-//    }
 
     public static void displayAll() {
         List<Account> all = repository.findAll();
@@ -127,7 +80,7 @@ public class AccountService {
         repository.insert(account);
     }
 
-    public static void delete() {
+    public static void deleteByUser() {
         displayAllUsersAccount();
         try {
             int id = Integer.parseInt(sc.getString("Which Want You Want To Delete: "));
@@ -156,8 +109,11 @@ public class AccountService {
     public static void transfer() {
         try {
             String cardId = sc.getString("Card Id: ");
+            if(cardId.length() != 16) {
+                System.out.println("Invalid Card");
+                return;
+            }
             Card card = CardService.findByCardId(cardId);
-            System.out.println(card);
             int balance = Integer.parseInt(sc.getString("How Much Money You Want To Transfer: "));
             System.out.println(balance);
             displayAllUsersAccount();
@@ -190,14 +146,12 @@ public class AccountService {
     }
 
 
-//    public static void deleteArticleAdmin() {
-//        int id = Integer.parseInt(sc.getString("ID of Article You Want to Delete: "));
-//        Account a = repository.findById(id);
-//        Set<Card> cards = a.getTags();
-//        repository.deleteById(id);
-//            System.out.println("Deleted Successfully");
-//            cards.forEach((t) -> t.removeArticle(a));
-//    }
+    public static void deleteAccountAdmin() {
+        displayAll();
+        int id = Integer.parseInt(sc.getString("ID of Account You Want to Delete: "));
+        repository.deleteById(id);
+        System.out.println("Deleted Successfully");
+    }
 
 
 }

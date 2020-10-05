@@ -58,4 +58,13 @@ public class Record {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "createDate='" + createDate + '\'' +
+                ", record='" + record + '\'' +
+                ", isDone=" + isDone +
+                '}';
+    }
 }

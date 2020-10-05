@@ -58,4 +58,14 @@ public class Employee {
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", branch=" + branch +
+                '}';
+    }
 }

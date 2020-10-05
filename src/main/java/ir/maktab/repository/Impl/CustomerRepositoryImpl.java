@@ -13,8 +13,35 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Integer
         return Customer.class;
     }
 
+//    @Override
+//    public boolean userLogin(String nationalCode, String password) {
+//        em.getTransaction().begin();
+//        TypedQuery<Customer> query = em.createQuery(
+//                "SELECT u FROM Customer u where u.nationalCode=:code",
+//                Customer.class);
+//        query.setParameter("code", nationalCode);
+//        if (query.getResultList().size() > 0) {
+//            Customer u = query.getSingleResult();
+//            String oldPass = u.getPassword();
+//            if (oldPass == null) {
+//                System.out.println("You didn't Set a Password!");
+//                System.out.println("To Ensure Safety Set a Password Later!");
+//            } else if (!oldPass.equals(password)) {
+//                System.out.println("Invalid Password " + u.getPassword());
+//                return false;
+//            }
+//            CustomerService.setCustomer(u);
+//            System.out.println("Welcome BaCk: " + u.getName());
+//            em.getTransaction().commit();
+//            return true;
+//        } else {
+//            em.getTransaction().rollback();
+//            return false;
+//        }
+//    }
+
     @Override
-    public boolean userLogin(String nationalCode, String password) {
+    public Customer findByNC(String nationalCode) {
         em.getTransaction().begin();
         TypedQuery<Customer> query = em.createQuery(
                 "SELECT u FROM Customer u where u.nationalCode=:code",
@@ -22,21 +49,12 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Integer
         query.setParameter("code", nationalCode);
         if (query.getResultList().size() > 0) {
             Customer u = query.getSingleResult();
-            String oldPass = u.getPassword();
-            if (oldPass == null) {
-                System.out.println("You didn't Set a Password!");
-                System.out.println("To Ensure Safety Set a Password Later!");
-            } else if (!oldPass.equals(password)) {
-                System.out.println("Invalid Password " + u.getPassword());
-                return false;
-            }
-            CustomerService.setCustomer(u);
-            System.out.println("Welcome BaCk: " + u.getName());
             em.getTransaction().commit();
-            return true;
+            return u;
+
         } else {
             em.getTransaction().rollback();
-            return false;
+            return null;
         }
     }
 }

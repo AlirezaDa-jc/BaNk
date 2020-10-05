@@ -29,4 +29,17 @@ public final class Scan {
     public void clearBuffer(){
         scannerKeyboard.nextLine();
     }
+
+    private String getText(String s) {
+        System.out.print(s);
+        StringBuilder text = new StringBuilder();
+        while (true) {
+            String temp = getString();
+            if (temp.equals("ESC")) {
+                break;
+            }
+            text.append(temp).append("\n");
+        }
+        return text.toString();
+    }
 }
