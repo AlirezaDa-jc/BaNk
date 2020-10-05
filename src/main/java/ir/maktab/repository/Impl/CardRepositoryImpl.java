@@ -13,7 +13,7 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card,Integer> impleme
     }
 
     @Override
-    public boolean checkDuplicateTitle(String actual) {
+    public Card findByCardId(String actual) {
         em.getTransaction().begin();
         TypedQuery<Card> query = em.createQuery(
                 "SELECT u FROM Card u where u.cardId=:title",
@@ -21,10 +21,12 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card,Integer> impleme
 
         query.setParameter("title", actual);
         if (query.getResultList().size() > 0) {
-            em.getTransaction().rollback();
-            return false;
+            Card card = query.getSingleResult();
+            em.getTransaction().commit();
+            return card;
         }
-        em.getTransaction().commit();
-        return true;
+        em.getTransaction().rollback();
+        return null;
     }
 }
+

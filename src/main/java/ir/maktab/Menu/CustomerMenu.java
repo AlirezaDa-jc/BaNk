@@ -52,7 +52,7 @@ public class CustomerMenu extends MenuImpl implements Menu {
                 int option = getOption();
                 switch (option) {
                     case 1:
-                        AccountService.displayAll();
+                        AccountService.displayAllUsersAccount();
                         break;
                     case 2:
                         AccountService.insert();
@@ -65,6 +65,10 @@ public class CustomerMenu extends MenuImpl implements Menu {
                         break;
                     case 5:
                         AccountService.updateBalance();
+                        break;
+                    case 6:
+                        AccountService.transfer();
+                        break;
                 }
             }catch (NullPointerException ex){
                 System.out.println("Invalid Input!");

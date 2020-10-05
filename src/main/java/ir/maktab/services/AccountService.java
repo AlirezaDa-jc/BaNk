@@ -11,7 +11,6 @@ import ir.maktab.repository.Impl.AccountRepositoryImpl;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Random;
 
 /*
 Design Pattern Combinator
@@ -107,14 +106,19 @@ public class AccountService {
 //        return true;
 //    }
 
-
     public static void displayAll() {
         List<Account> all = repository.findAll();
         all.stream()
                 .filter((a)-> !a.isDeleted())
-                .forEach((t)-> System.out.println("ID: " + t.getId() +"\nBranch: " + t.getBranch().getTitle() + "\nCard: "
-                        + t.getCard().getCardId() + "\nCustomer: " + t.getCustomer().getName() +
-                        "\nBalance: "+t.getBalance() ));
+                .forEach(System.out::println);
+    }
+
+    public static void displayAllUsersAccount() {
+        List<Account> all = repository.findAll();
+        all.stream()
+                .filter((a)-> a.getCustomer() == CustomerService.getCustomer())
+                .filter((a)-> !a.isDeleted())
+                .forEach(System.out::println);
     }
 
 
@@ -123,7 +127,7 @@ public class AccountService {
     }
 
     public static void delete() {
-        displayAll();
+        displayAllUsersAccount();
         try {
             int id = Integer.parseInt(sc.getString("Which Want You Want To Delete: "));
             String choice = sc.getString("Sure? Y/N");
@@ -137,7 +141,7 @@ public class AccountService {
     }
 
     public static void updateBalance() {
-        displayAll();
+        displayAllUsersAccount();
         int id = Integer.parseInt(sc.getString("Which Want You Want To Add Balance: "));
         Account account = repository.findById(id);
         System.out.println("Your Balance is : " + account.getBalance());
@@ -146,6 +150,31 @@ public class AccountService {
         account.setBalance(balance);
         repository.update(account);
         System.out.println("Updated Successfully");
+    }
+
+    public static void transfer() {
+        String cardId = sc.getString("Card Id: ");
+        Card card = CardService.findByCardId(cardId);
+        System.out.println(card);
+        int balance = Integer.parseInt(sc.getString("How Much Money You Want To Transfer: "));
+        System.out.println(balance);
+        displayAllUsersAccount();
+        int id = Integer.parseInt(sc.getString("ID of Account You Want TO Transfer: "));
+        Account account = repository.findById(id);
+        Integer updatedBalance = account.getBalance();
+        if(balance >= (updatedBalance - 500)){
+            System.out.println(balance);
+            System.out.println(updatedBalance);
+            System.out.println("Not Enough Money!");
+            return;
+        }
+         updatedBalance -= balance;
+        account.setBalance(updatedBalance);
+        repository.insert(account);
+        Account secondAccount = card.getAccount();
+        updatedBalance = secondAccount.getBalance();
+        secondAccount.setBalance((updatedBalance+balance));
+        repository.insert(secondAccount);
     }
 
 

@@ -33,9 +33,13 @@ public class CardService {
     }
 
     public static String checkID(String actual) {
-        while(!repository.checkDuplicateTitle(actual)) actual = String.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() *
+        while(repository.findByCardId(actual) != null) actual = String.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() *
                 (MAX_NUMBER - MIN_NUMBER)).longValue()));
         return actual;
+    }
+
+    public static Card findByCardId(String cardId) {
+        return repository.findByCardId(cardId);
     }
 
 //
