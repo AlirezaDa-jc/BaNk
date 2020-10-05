@@ -13,8 +13,10 @@ public class Card {
     private int id;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "cardid" , nullable = false , unique = true)
+    @Column(name = "cardid" ,updatable = false,nullable = false , unique = true)
     private String cardId;
+    @Column(name = "cvv2" , updatable = false ,nullable = false , unique = true)
+    private String cvv2;
     @OneToOne(fetch = FetchType.LAZY, cascade={CascadeType.ALL},
             mappedBy = "card")
     private Account account;
@@ -49,6 +51,14 @@ public class Card {
 
     public void setCardId(String cardId) {
         this.cardId = cardId;
+    }
+
+    public String getCvv2() {
+        return cvv2;
+    }
+
+    public void setCvv2(String cvv2) {
+        this.cvv2 = cvv2;
     }
 }
 

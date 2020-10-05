@@ -8,6 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Card.class)
 public abstract class Card_ {
 
+	public static volatile SingularAttribute<Card, String> cvv2;
 	public static volatile SingularAttribute<Card, String> password;
 	public static volatile SingularAttribute<Card, String> cardId;
 	public static volatile SingularAttribute<Card, Integer> id;

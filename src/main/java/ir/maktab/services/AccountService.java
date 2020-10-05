@@ -36,13 +36,16 @@ public class AccountService {
         account.setCustomer(customer);
         if (branch == null || customer == null) {
             System.out.println("Invalid Category Or User Usage");
-            return ;
+            return;
         }
         System.out.println("\n Card Section!");
         Card card = new Card();
         String actual = "";
         actual = CardService.checkID(actual);
         card.setCardId(actual);
+        String cvv2 = "";
+        cvv2 = CardService.checkCVV2(cvv2);
+        card.setCvv2(cvv2);
         String password = sc.getString("Password: ");
         card.setPassword(password);
         CardService.add(card);
@@ -109,15 +112,15 @@ public class AccountService {
     public static void displayAll() {
         List<Account> all = repository.findAll();
         all.stream()
-                .filter((a)-> !a.isDeleted())
+                .filter((a) -> !a.isDeleted())
                 .forEach(System.out::println);
     }
 
     public static void displayAllUsersAccount() {
         List<Account> all = repository.findAll();
         all.stream()
-                .filter((a)-> a.getCustomer() == CustomerService.getCustomer())
-                .filter((a)-> !a.isDeleted())
+                .filter((a) -> a.getCustomer().getNationalCode().equals(CustomerService.getCustomer().getNationalCode()))
+                .filter((a) -> !a.isDeleted())
                 .forEach(System.out::println);
     }
 
@@ -131,11 +134,11 @@ public class AccountService {
         try {
             int id = Integer.parseInt(sc.getString("Which Want You Want To Delete: "));
             String choice = sc.getString("Sure? Y/N");
-            if(choice.toLowerCase().charAt(0) == 'n') return;
+            if (choice.toLowerCase().charAt(0) == 'n') return;
             Account account = repository.findById(id);
             account.setDeleted(true);
             repository.update(account);
-        }catch (InputMismatchException ex){
+        } catch (InputMismatchException ex) {
             System.out.println("Invalid Input!");
         }
     }
@@ -153,28 +156,38 @@ public class AccountService {
     }
 
     public static void transfer() {
-        String cardId = sc.getString("Card Id: ");
-        Card card = CardService.findByCardId(cardId);
-        System.out.println(card);
-        int balance = Integer.parseInt(sc.getString("How Much Money You Want To Transfer: "));
-        System.out.println(balance);
-        displayAllUsersAccount();
-        int id = Integer.parseInt(sc.getString("ID of Account You Want TO Transfer: "));
-        Account account = repository.findById(id);
-        Integer updatedBalance = account.getBalance();
-        if(balance >= (updatedBalance - 500)){
+        try {
+            String cardId = sc.getString("Card Id: ");
+            Card card = CardService.findByCardId(cardId);
+            System.out.println(card);
+            int balance = Integer.parseInt(sc.getString("How Much Money You Want To Transfer: "));
             System.out.println(balance);
-            System.out.println(updatedBalance);
-            System.out.println("Not Enough Money!");
-            return;
+            displayAllUsersAccount();
+            int id = Integer.parseInt(sc.getString("ID of Account You Want TO Transfer: "));
+            Account account = repository.findById(id);
+            String password = sc.getString("Card's Password: ");
+            String cvv2 = sc.getString("Cvv2: ");
+            if (!account.getCard().getPassword().equals(password) || !account.getCard().getCvv2().equals(cvv2)) {
+                System.out.println("Invalid Password Or Cvv2");
+                return;
+            }
+            Integer updatedBalance = account.getBalance();
+            if (balance >= (updatedBalance - 500)) {
+                System.out.println(balance);
+                System.out.println(updatedBalance);
+                System.out.println("Not Enough Money!");
+                return;
+            }
+            updatedBalance -= (balance + 500);
+            account.setBalance(updatedBalance);
+            repository.insert(account);
+            Account secondAccount = card.getAccount();
+            updatedBalance = secondAccount.getBalance();
+            secondAccount.setBalance((updatedBalance + balance));
+            repository.insert(secondAccount);
+        }catch (NumberFormatException ex){
+            System.out.println("Invalid Input!");
         }
-         updatedBalance -= balance;
-        account.setBalance(updatedBalance);
-        repository.insert(account);
-        Account secondAccount = card.getAccount();
-        updatedBalance = secondAccount.getBalance();
-        secondAccount.setBalance((updatedBalance+balance));
-        repository.insert(secondAccount);
     }
 
 

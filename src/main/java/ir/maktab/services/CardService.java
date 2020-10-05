@@ -42,6 +42,15 @@ public class CardService {
         return repository.findByCardId(cardId);
     }
 
+    public static String checkCVV2(String cvv2) {
+        while(repository.findByCardId(cvv2) != null) {
+            cvv2 = String.valueOf(Math.abs(new Random().nextInt()));
+            while(!(Integer.parseInt(cvv2) < 9999 && Integer.parseInt(cvv2) > 1000))
+                cvv2 = String.valueOf(Math.abs(new Random().nextInt()));
+        }
+        return cvv2;
+    }
+
 //
 //    public static void displayAll() {
 //        repository.displayAll();
