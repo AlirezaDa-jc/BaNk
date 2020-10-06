@@ -16,6 +16,7 @@ public class EmployeeMenu extends MenuImpl implements Menu {
     public EmployeeMenu() {
         sc = MainApp.getSc();
     }
+
     @Override
     public void display() {
         System.out.println("To Display All Accounts Press 1");
@@ -32,33 +33,37 @@ public class EmployeeMenu extends MenuImpl implements Menu {
     public void menuHandler() {
         boolean flag = true;
         while (flag) {
-            display();
-            setOption(sc);
-            int option = getOption();
-            switch (option) {
-                case 1:
-                    AccountService.displayAll();
-                    break;
-                case 2:
-                    AccountService.deleteAccountAdmin();
-                    break;
-                case 3:
-                    BranchService.add();
-                    break;
-                case 4:
-                    CustomerService.updateSuspension();
-                    break;
-                case 5:
-                    EmployeeService.insert();
-                    break;
-                case 6:
-                    EmployeeService.displayAll();
-                    break;
-                case 7:
-                    EmployeeService.displayEmployees();
-                    break;
-                case 8:
-                    flag = false;
+            try {
+                display();
+                setOption(sc);
+                int option = getOption();
+                switch (option) {
+                    case 1:
+                        AccountService.displayAll();
+                        break;
+                    case 2:
+                        AccountService.deleteAccountAdmin();
+                        break;
+                    case 3:
+                        BranchService.add();
+                        break;
+                    case 4:
+                        CustomerService.updateSuspension();
+                        break;
+                    case 5:
+                        EmployeeService.insert();
+                        break;
+                    case 6:
+                        EmployeeService.displayAll();
+                        break;
+                    case 7:
+                        EmployeeService.displayEmployees();
+                        break;
+                    case 8:
+                        flag = false;
+                }
+            } catch (NullPointerException ex) {
+                System.out.println("Invalid Inpur");
             }
         }
     }
@@ -68,8 +73,8 @@ public class EmployeeMenu extends MenuImpl implements Menu {
         return false;
     }
 
-    public void setOption(Scan sc){
-        while(true) {
+    public void setOption(Scan sc) {
+        while (true) {
             try {
                 option = Integer.parseInt(sc.getString("Enter a Number: "));
                 super.setOption(option);
@@ -80,7 +85,7 @@ public class EmployeeMenu extends MenuImpl implements Menu {
         }
     }
 
-    public int getOption(){
+    public int getOption() {
         return super.getOption();
     }
 

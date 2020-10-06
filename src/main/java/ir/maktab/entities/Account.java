@@ -1,8 +1,6 @@
 package ir.maktab.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "account")
@@ -86,7 +84,7 @@ public class Account {
     @Override
     public String toString() {
         return "ID: " + id +"\nBranch: " + branch.getTitle() + "\nCard: "
-                + card.getCardId() + "\nCustomer: " + customer.getName() +
+                + card.getCardId()+ "CVV2:" + card.getCvv2() + "\nCustomer: " + customer.getName() +
                 "\nBalance: "+balance;
     }
 }
