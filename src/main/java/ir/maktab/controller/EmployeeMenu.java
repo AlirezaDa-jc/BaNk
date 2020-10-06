@@ -1,4 +1,4 @@
-package ir.maktab.Menu;
+package ir.maktab.controller;
 
 
 import ir.maktab.FactoryMethod.Menu;

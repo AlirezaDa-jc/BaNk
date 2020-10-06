@@ -1,8 +1,8 @@
 package ir.maktab.FactoryMethod;
 
-import ir.maktab.Menu.CustomerMenu;
-import ir.maktab.Menu.EmployeeMenu;
 import ir.maktab.Scan;
+import ir.maktab.controller.CustomerMenu;
+import ir.maktab.controller.EmployeeMenu;
 import ir.maktab.services.CustomerService;
 import ir.maktab.services.EmployeeService;
 import ir.maktab.services.RoleService;
