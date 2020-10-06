@@ -5,7 +5,10 @@ import ir.maktab.FactoryMethod.Menu;
 import ir.maktab.FactoryMethod.MenuImpl;
 import ir.maktab.MainApp;
 import ir.maktab.Scan;
-import ir.maktab.services.*;
+import ir.maktab.services.AccountService;
+import ir.maktab.services.BranchService;
+import ir.maktab.services.CustomerService;
+import ir.maktab.services.EmployeeService;
 
 public class EmployeeMenu extends MenuImpl implements Menu {
     private Scan sc;
@@ -20,6 +23,9 @@ public class EmployeeMenu extends MenuImpl implements Menu {
         System.out.println("To Add Branch Press 3");
         System.out.println("To Remove Suspension Of Customers' Account Press 4");
         System.out.println("To Add Employee To A Branch Press 5");
+        System.out.println("To See All Of Employees Press 6");
+        System.out.println("To See Your Employees Press 7");
+        System.out.println("To Log Out Press 8");
     }
 
     @Override
@@ -45,7 +51,13 @@ public class EmployeeMenu extends MenuImpl implements Menu {
                 case 5:
                     EmployeeService.insert();
                     break;
-                case 11:
+                case 6:
+                    EmployeeService.displayAll();
+                    break;
+                case 7:
+                    EmployeeService.displayEmployees();
+                    break;
+                case 8:
                     flag = false;
             }
         }

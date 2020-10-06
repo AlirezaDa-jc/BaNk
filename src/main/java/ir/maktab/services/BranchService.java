@@ -47,12 +47,9 @@ public class BranchService {
             return false;
         }
         String description = sc.getString("Enter Description: ");
-        EmployeeService.insertBoss();
-        int id = Integer.parseInt(sc.getString());
-        Employee boss = EmployeeService.findById(id);
+        Employee boss = EmployeeService.insertBoss();
         branch.setTitle(title);
         branch.setDescription(description);
-        if (boss == null) return false;
         branch.setBoss(boss);
         repository.insert(branch);
         boss.setBranch(branch);
@@ -61,5 +58,7 @@ public class BranchService {
     }
 
     public static void displayAll() {
+        List<Branch> all = repository.findAll();
+        all.forEach(System.out::println);
     }
 }

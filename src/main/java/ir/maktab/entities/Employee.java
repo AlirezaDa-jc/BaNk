@@ -1,6 +1,8 @@
 package ir.maktab.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -18,6 +20,12 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "branch")
     private Branch branch;
+    @ManyToOne
+    @JoinColumn(name = "boss" , nullable = true)
+    private Employee boss;
+    @OneToMany(mappedBy="boss",cascade = CascadeType.ALL)
+    private Set<Employee> employees = new HashSet<>();
+
 
     public int getId() {
         return id;
@@ -59,13 +67,36 @@ public class Employee {
         this.branch = branch;
     }
 
+    public Employee getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Employee boss) {
+        this.boss = boss;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public void addEmployee(Employee employee){
+        employees.add(employee);
+    }
+
+
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", role=" + role +
-                ", branch=" + branch +
-                '}';
+            return "Employee{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", password='" + password + '\'' +
+                    ", role=" + role.getRoleTitle() +
+                    ", branch=" + branch.getTitle() +", boss=" + boss +
+                    '}';
+
     }
 }

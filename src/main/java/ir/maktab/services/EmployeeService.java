@@ -1,10 +1,9 @@
 package ir.maktab.services;
 
 import ir.maktab.MainApp;
-
+import ir.maktab.Scan;
 import ir.maktab.entities.Branch;
 import ir.maktab.entities.Employee;
-import ir.maktab.Scan;
 import ir.maktab.entities.Role;
 import ir.maktab.repository.EmployeeRepository;
 import ir.maktab.repository.Impl.EmployeeRepositoryImpl;
@@ -37,9 +36,10 @@ public class EmployeeService {
         return repository.login(userName, password);
     }
 
-    public static void insertBoss() {
+    public static Employee insertBoss() {
         Employee employee = addInputs();
         repository.insert(employee);
+        return employee;
     }
 
     private static Employee addInputs() {
@@ -71,7 +71,18 @@ public class EmployeeService {
         Branch branch =BranchService.use();
         Employee employee = addInputs();
         employee.setBranch(branch);
-        branch.addEmployer(employee);
+        Employee boss = branch.getBoss();
+        employee.setBoss(boss);
+        boss.addEmployee(employee);
+        branch.addEmployee(employee);
         repository.insert(employee);
+        repository.update(boss);
+    }
+
+    public static void displayEmployees() {
+        List<Employee> all = repository.findAll();
+        all.stream()
+                .filter((b)-> b.getBoss() != null && b.getBoss().getName().equals(employee.getName()))
+                .forEach(System.out::println);
     }
 }

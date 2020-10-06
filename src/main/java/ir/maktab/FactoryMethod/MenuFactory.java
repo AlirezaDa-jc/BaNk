@@ -3,11 +3,9 @@ package ir.maktab.FactoryMethod;
 import ir.maktab.Menu.CustomerMenu;
 import ir.maktab.Menu.EmployeeMenu;
 import ir.maktab.Scan;
-import ir.maktab.entities.Branch;
-import ir.maktab.services.BranchService;
+import ir.maktab.services.CustomerService;
 import ir.maktab.services.EmployeeService;
 import ir.maktab.services.RoleService;
-import ir.maktab.services.CustomerService;
 
 public class MenuFactory {
     Scan sc = Scan.getInstance();
@@ -25,6 +23,7 @@ public class MenuFactory {
                 break;
             case "EMPLOYEE":
                 RoleService.checkRole(type);
+//                BranchService.add();
                 if (EmployeeService.login()) {
                     return new EmployeeMenu();
                 }

@@ -20,12 +20,12 @@ public class MainApp {
     private static void check() {
         MenuFactory menuFactory = new MenuFactory();
         while (true) {
-            try {
+//            try {
                 Menu menu = menuFactory.getMenu();
                 menu.menuHandler();
-            }catch (NullPointerException ex){
-                System.out.println("Invalid Input!");
-            }
+//            }catch (NullPointerException ex){
+//                System.out.println("Invalid Input!");
+//            }
         }
     }
 

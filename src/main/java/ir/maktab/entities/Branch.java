@@ -58,7 +58,7 @@ public class Branch {
         accounts.add(account);
         account.setBranch(this);
     }
-    public void addEmployer(Employee employee) {
+    public void addEmployee(Employee employee) {
         employees.add(employee);
         employee.setBranch(this);
     }
